@@ -191,7 +191,7 @@ Looking at the density function associated with total steps per interval in each
 
 ```r
 ggplot() + geom_density(aes(x=num_steps$steps_per_day), colour="indianred2") + 
-        geom_density(aes(x=imp_total$steps_per_day), colour="deepskyblue")
+        geom_density(aes(x=imp_total$steps_per_day), colour="deepskyblue") +labs(x = "steps per day")
 ```
 
 ![plot of chunk density function of each dataset](figure/density function of each dataset-1.png) 
