@@ -23,15 +23,6 @@ intervals <- sprintf("%04d", as.numeric(dat$interval))
 intervals2 <- strptime(intervals, format="%H%M")
 actNA <- cbind.data.frame(dat, intervals2)
 actNA$date <- as.Date(actNA$date, format = "%Y-%m-%d")
-str(actNA)
-```
-
-```
-## 'data.frame':	17568 obs. of  4 variables:
-##  $ steps     : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ date      : Date, format: "2012-10-01" "2012-10-01" ...
-##  $ interval  : int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ intervals2: POSIXct, format: "2015-03-15 00:00:00" "2015-03-15 00:05:00" ...
 ```
 
 Date and interval now have a date and time format. Now NAs can be removed in a new dataset.
@@ -54,20 +45,6 @@ We calculate steps taken per day using the data.table package, and plot them usi
 num_steps <- act[, sum(steps), by=date]
 setnames(num_steps,"V1","steps_per_day")
 total_steps <- num_steps$steps
-head(num_steps)
-```
-
-```
-##          date steps_per_day
-## 1: 2012-10-02           126
-## 2: 2012-10-03         11352
-## 3: 2012-10-04         12116
-## 4: 2012-10-05         13294
-## 5: 2012-10-06         15420
-## 6: 2012-10-07         11015
-```
-
-```r
 library(ggplot2)
 ggplot(num_steps, aes(x = steps_per_day)) + geom_histogram(binwidth=500, fill="indianred2") + ggtitle("Total steps per day") + labs(x = "steps per day")
 ```
@@ -172,17 +149,6 @@ impute.mean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))
 imp_proj <- actNA[, lapply(.SD, impute.mean), by = interval]
 
 imp_proj_ordered <- imp_proj[order(date, interval)]
-head(imp_proj_ordered)
-```
-
-```
-##               interval     steps       date
-## 1: 2015-03-15 00:00:00 1.7169811 2012-10-01
-## 2: 2015-03-15 00:05:00 0.3396226 2012-10-01
-## 3: 2015-03-15 00:10:00 0.1320755 2012-10-01
-## 4: 2015-03-15 00:15:00 0.1509434 2012-10-01
-## 5: 2015-03-15 00:20:00 0.0754717 2012-10-01
-## 6: 2015-03-15 00:25:00 2.0943396 2012-10-01
 ```
 We can now compare our new data, with imputed values, to our previous "clean" data. Calculating the sum of steps per day for each day:
 
