@@ -72,7 +72,7 @@ library(ggplot2)
 ggplot(num_steps, aes(x = steps_per_day)) + geom_histogram(binwidth=500, fill="indianred2") + ggtitle("Total steps per day") + labs(x = "steps per day")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk calculate and plot average steps per day by interval](figure/calculate and plot average steps per day by interval-1.png) 
 
 Calculate and report the mean and median total number of steps taken per day
 
@@ -107,7 +107,7 @@ setnames(interval_means, "intervals2", "interval")
 ggplot(interval_means, aes(x = interval, y = mean_steps))+geom_line(color="indianred2")+ggtitle("mean steps per interval")+labs(x="time", y="mean steps")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![plot of chunk time series plot of average steps per day, by interval](figure/time series plot of average steps per day, by interval-1.png) 
 
 From the time series we can see that there is a clear maximum around 8AM, indeed the 5-minute interval, on average across all the days in the dataset, containing the maximum number of steps is
 
@@ -122,6 +122,14 @@ subset(interval_means, mean_steps==maxmean, select=interval)
 ## 1: 2015-03-15 08:35:00
 ```
 
+```r
+message("interval with greatest average steps per day is 8:35")
+```
+
+```
+## interval with greatest average steps per day is 8:35
+```
+
 ## Imputing Missing Values
 There are a number of NA values for the step count in our original dataframe.
 
@@ -134,7 +142,7 @@ NA_count
 ## [1] 2304
 ```
 
-We impute the missing steps values using the mean number of steps at the time of the missing value, over all days in the dataset. 
+Using data.table we impute the missing steps values using the mean number of steps at the time of the missing value, over all days in the dataset. 
 
 
 ```r
@@ -210,7 +218,7 @@ Because we used mean over intervals to impute the missing data, the mean has sta
 ggplot(imp_total, aes(x = steps_per_day)) + geom_histogram(binwidth=500, fill="deepskyblue") + ggtitle("Total steps per day using imputed values") + labs(x = "steps per day")+geom_density()
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![plot of chunk histogram of new steps per day over intervals, with imputed data](figure/histogram of new steps per day over intervals, with imputed data-1.png) 
 
 Looking at the density function associated with total steps per interval in each data set, we can see how the distribution has narrowed:
 
@@ -220,7 +228,7 @@ ggplot() + geom_density(aes(x=num_steps$steps_per_day), colour="indianred2") +
         geom_density(aes(x=imp_total$steps_per_day), colour="deepskyblue")
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
+![plot of chunk density function of each dataset](figure/density function of each dataset-1.png) 
 
 ## Weekdays and Weekends
 
@@ -254,7 +262,7 @@ ggplot(day_final, aes(x = interval, y = steps, color=WDfactor))+geom_line()+ggti
 ## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
+![plot of chunk attribute weekday/weekend factor variable to all days, plot time series](figure/attribute weekday/weekend factor variable to all days, plot time series-1.png) 
 
 
 
